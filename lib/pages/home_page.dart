@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:notebook/models/note_book.dart';
 import 'package:notebook/pages/drawer_page.dart';
+import 'package:notebook/pages/note_add_page.dart';
 import 'package:notebook/util/util.dart';
 
 class HomePage extends StatefulWidget {
@@ -11,18 +13,19 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  List<dynamic> bookList = [];
+  List<NoteBook> notebookList = [];
 
   @override
   void initState() {
     super.initState();
+    notebookList = [
+      NoteBook(title: 'My Insta', content: 'Insta content', date: '20-12-2020'),
+      NoteBook(title: 'My Phone', content: 'Insta phone ok', date: '21-12-2020'),
+      NoteBook(title: 'My Fabu', content: 'Fabu content', date: '24-12-2020'),
 
-    bookList = [
-      {'title':'Facebook', 'content':'My Password: 123456', 'date':'15-01-2023'},
-      {'title':'Twitter', 'content':'My username: abc', 'date':'12-01-2023'},
-      {'title':'Instagram', 'content':'My instaname: xyz', 'date':'11-01-2023'},
-      {'title':'Telegram', 'content':'My telename: pqr', 'date':'10-01-2023'},
     ];
+
+
   }
 
   @override
@@ -31,7 +34,11 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: Container(
         margin: const EdgeInsets.only(right: 20, bottom: 20),
         child: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context){
+              return const NoteAddPage();
+            }));
+          },
           child: const Icon(Icons.add),
         ),
       ),
@@ -51,17 +58,17 @@ class _HomePageState extends State<HomePage> {
           children: [
             Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.menu_book,
                   size: 40,
                 ),
-                Text('Hello Palash'),
+                const Text(' Hello Palash, '),
                 Text(Util.greeting()),
               ],
             ),
             Container(
               height: 55,
-              margin: EdgeInsets.only(top: 15.0, bottom: 15.0),
+              margin: const EdgeInsets.only(top: 15.0, bottom: 15.0),
               child: TextField(
                 decoration: InputDecoration(
                   labelText: 'Search bt Title...',
@@ -71,19 +78,19 @@ class _HomePageState extends State<HomePage> {
                     borderSide: BorderSide(
                       color: Colors.grey.shade400,
                     ),
-                    borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                    borderRadius: const BorderRadius.all(Radius.circular(8.0)),
                   ),
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
                       color: Colors.grey.shade400,
                     ),
-                    borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                    borderRadius: const BorderRadius.all(Radius.circular(8.0)),
                   ),
                   disabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
                       color: Colors.grey.shade400,
                     ),
-                    borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                    borderRadius: const BorderRadius.all(Radius.circular(16.0)),
                   ),
                 ),
               ),
@@ -91,12 +98,13 @@ class _HomePageState extends State<HomePage> {
             Expanded(
               child: ListView.separated(
                 separatorBuilder: (BuildContext context, int index){
-                  return SizedBox(
+                  return const SizedBox(
                     height: 8.0,
                   );
                 } ,
-                itemCount: bookList.length,
+                itemCount: notebookList.length,
                 itemBuilder: (BuildContext context, int index) {
+                  NoteBook myNoteBook = notebookList[index];
                   return Column(
                     children: [
                       Container(
@@ -107,7 +115,7 @@ class _HomePageState extends State<HomePage> {
                           borderRadius: BorderRadius.circular(8.0),
                         ),
                         child: Padding(
-                          padding: EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(8.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -116,63 +124,63 @@ class _HomePageState extends State<HomePage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    bookList[index]['title'],
-                                    style: TextStyle(
+                                    myNoteBook.title??'',  // nullable sign অর্থাৎ ভ্যালু না দিলেও সেভ হবে। ভ্যালু দিলে ?? এর আগে বসবে আর ভ্যালু না দিলে ‘’ এর মধ্যে সেভ হবে।
+                                    style: const TextStyle(
                                       fontSize: 18.0,
                                       fontWeight: FontWeight.w800,
                                     ),
                                   ),
                                   Text(
-                                    bookList[index]['content'],
-                                    style: TextStyle(
+                                    myNoteBook.content??'',
+                                    style: const TextStyle(
                                       fontSize: 16.0,
                                       fontWeight: FontWeight.normal,
                                     ),
                                   ),
                                   Text(
-                                    bookList[index]['date'],
-                                    style: TextStyle(
+                                    myNoteBook.date??'',
+                                    style: const TextStyle(
                                       fontSize: 16.0,
                                       fontWeight: FontWeight.normal,
                                     ),
                                   ),
                                 ],
                               ),
-                              PopupMenuButton<String>(
+                              PopupMenuButton<int>(
                                 itemBuilder: (BuildContext context) {
-                                  return <PopupMenuEntry<String>>[
+                                  return <PopupMenuEntry<int>>[
                                     PopupMenuItem(
-                                      value: 'key_edit',
+                                      value: 0,
                                       child: Row(
                                         children: [
-                                          Icon(Icons.edit),
-                                          SizedBox(
+                                          const Icon(Icons.edit),
+                                          const SizedBox(
                                             width: 8.0,
                                           ),
-                                          Text('Edit'),
+                                          const Text('Edit'),
                                         ],
                                       ),
                                     ),
                                     PopupMenuItem(
-                                      value: 'key_delete',
+                                      value: 1,
                                       child: Row(
                                         children: [
-                                          Icon(Icons.delete_forever),
-                                          SizedBox(
+                                          const Icon(Icons.delete_forever),
+                                          const SizedBox(
                                             width: 8.0,
                                           ),
-                                          Text('Delete'),
+                                          const Text('Delete'),
                                         ],
                                       ),
                                     ),
                                   ];
                                 },
                                 padding: EdgeInsets.zero,
-                                icon: Icon(Icons.more_vert),
-                                onSelected: (String value) {
-                                  if(value == 'key_edit'){
+                                icon: const Icon(Icons.more_vert),
+                                onSelected: (int value) {
+                                  if(value == 0){
                                     //Do Edit
-                                  } else if(value == 'key_delete'){
+                                  } else if(value == 1){
                                     //Do Delete
                                   }
                                 },
